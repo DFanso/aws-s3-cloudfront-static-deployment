@@ -5,6 +5,8 @@ on:
     branches:
       - main
   workflow_dispatch:
+  location:
+    - frontend
 
 env:
   AWS_REGION: us-east-1
