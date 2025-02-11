@@ -1,7 +1,9 @@
 resource "aws_acm_certificate" "website" {
-  provider = aws.us-east-1  # ACM certificates for CloudFront must be in us-east-1
+  provider = aws.us-east-1
   domain_name       = var.domain_name
   validation_method = "DNS"
+  
+  subject_alternative_names = local.all_domains
 
   lifecycle {
     create_before_destroy = true

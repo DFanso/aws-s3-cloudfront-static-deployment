@@ -2,9 +2,9 @@ terraform {
   required_version = ">= 1.0.0"
 
   backend "s3" {
-    bucket = var.backend_config.bucket
-    key    = var.backend_config.key
-    region = var.backend_config.region
+   bucket = "royal-luxury-award-terraform"
+  key    = "static-website/terraform.tfstate"
+  region = "us-east-1"
     encrypt = true
   }
 
@@ -16,8 +16,19 @@ terraform {
   }
 }
 
+# Default provider
 provider "aws" {
   region = var.region
+
+  default_tags {
+    tags = var.tags
+  }
+}
+
+# Provider for ACM certificates (must be in us-east-1 for CloudFront)
+provider "aws" {
+  alias  = "us-east-1"
+  region = "us-east-1"
 
   default_tags {
     tags = var.tags

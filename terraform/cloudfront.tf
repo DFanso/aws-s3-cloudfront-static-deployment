@@ -2,6 +2,11 @@ resource "aws_cloudfront_origin_access_identity" "website" {
   comment = "${var.project_name}-${var.environment}-website OAI"
 }
 
+locals {
+  primary_domain = var.subdomain != "" ? "${var.subdomain}.${var.domain_name}" : var.domain_name
+  all_domains    = concat([local.primary_domain], var.alternative_domains)
+}
+
 resource "aws_cloudfront_distribution" "website" {
   origin {
     domain_name = aws_s3_bucket.website.bucket_regional_domain_name
@@ -16,7 +21,7 @@ resource "aws_cloudfront_distribution" "website" {
   is_ipv6_enabled     = true
   comment             = "${var.project_name}-${var.environment} website distribution"
   default_root_object = "index.html"
-  aliases             = [var.domain_name]
+  aliases             = local.all_domains
 
   custom_error_response {
     error_code         = 404

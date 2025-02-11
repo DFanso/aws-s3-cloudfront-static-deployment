@@ -1,6 +1,12 @@
+locals {
+  domains = toset(local.all_domains)
+}
+
 resource "aws_route53_record" "website" {
+  for_each = local.domains
+
   zone_id = var.route53_zone_id
-  name    = var.domain_name
+  name    = each.value
   type    = "A"
 
   alias {
@@ -12,8 +18,10 @@ resource "aws_route53_record" "website" {
 
 # Add IPv6 support
 resource "aws_route53_record" "website_ipv6" {
+  for_each = local.domains
+
   zone_id = var.route53_zone_id
-  name    = var.domain_name
+  name    = each.value
   type    = "AAAA"
 
   alias {

@@ -14,8 +14,20 @@ variable "environment" {
 }
 
 variable "domain_name" {
-  description = "The domain name for the website"
+  description = "The primary domain name for the website (e.g., example.com)"
   type        = string
+}
+
+variable "subdomain" {
+  description = "The subdomain for the website (e.g., www, app, etc.)"
+  type        = string
+  default     = "www"
+}
+
+variable "alternative_domains" {
+  description = "List of alternative domain names (e.g., example.com if www.example.com is primary)"
+  type        = list(string)
+  default     = []
 }
 
 variable "route53_zone_id" {
@@ -23,14 +35,12 @@ variable "route53_zone_id" {
   type        = string
 }
 
-variable "backend_config" {
-  description = "Backend configuration for storing terraform state"
-  type = object({
-    bucket = string
-    key    = string
-    region = string
-  })
+variable "dns_ttl" {
+  description = "TTL for DNS records"
+  type        = number
+  default     = 300
 }
+
 
 variable "tags" {
   description = "Common tags for all resources"
