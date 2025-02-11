@@ -7,14 +7,8 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
-    // Enable minification
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
-      }
-    },
+    // Use esbuild minification for better performance
+    minify: 'esbuild',
     // Optimize dependencies
     rollupOptions: {
       output: {
@@ -34,6 +28,8 @@ export default defineConfig({
   },
   // Enable SWC for faster builds
   esbuild: {
-    jsxInject: `import React from 'react'`
+    jsxInject: `import React from 'react'`,
+    // Drop console in production
+    drop: ['console', 'debugger']
   }
 })
